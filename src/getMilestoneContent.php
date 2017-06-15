@@ -4,10 +4,10 @@ namespace Flacox;
 require_once(dirname(__FILE__).DIRECTORY_SEPARATOR.'TuleapUser.class.php');
 require_once(dirname(__FILE__).DIRECTORY_SEPARATOR.'CurlManager.class.php');
 
-function getProjects(TuleapUser $user)
+function getMilestoneContent(TuleapUser $user, $milestoneID)
 {
     $curlManager = new CurlManager();
-    $curlManager->setUrl("api/projects");
+    $curlManager->setUrl("api/milestones/".$milestoneID."/content");
     $curlManager->setHeaders($user->getId(), $user->getToken());
 
     $query = $curlManager->execute();
@@ -19,15 +19,18 @@ function getProjects(TuleapUser $user)
     } else {
         $jsonResponse = json_decode($query);
 
-        $projects = array();
+        $milestoneContent = array();
         $i = 0;
+
         foreach ($jsonResponse as $jsonObject) {
-            $projects[$i]['id'] = $jsonObject->id;
-            $projects[$i]['label'] = $jsonObject->label;
+            $milestoneContent[$i]['id'] = $jsonObject->id;
+            $milestoneContent[$i]['status'] = $jsonObject->status;
+            $milestoneContent[$i]['type'] = $jsonObject->type;
+            $milestoneContent[$i]['effort'] = $jsonObject->initial_effort;
             $i++;
         }
-    
-        return $projects;
+        
+        return $milestoneContent;
     }
 }
 ?>

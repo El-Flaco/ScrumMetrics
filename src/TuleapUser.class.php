@@ -9,10 +9,8 @@ class TuleapUser
     public function __construct($name, $password)
     {
         if ($this->authenticate($name, $password)) {
-            echo "WELCOME " . $name . "\n";
             return true;
         } else {
-            echo "Try again\n";
             return false;
         }
     }
