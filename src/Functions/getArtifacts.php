@@ -1,8 +1,8 @@
 <?php
 namespace Flacox;
 
-require_once(dirname(__FILE__).DIRECTORY_SEPARATOR."Classes".DIRECTORY_SEPARATOR."TuleapUser.class.php");
-require_once(dirname(__FILE__).DIRECTORY_SEPARATOR."Classes".DIRECTORY_SEPARATOR."CurlManager.class.php");
+require_once(dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR."Classes".DIRECTORY_SEPARATOR."TuleapUser.class.php");
+require_once(dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR."Classes".DIRECTORY_SEPARATOR."CurlManager.class.php");
 
 function getArtifacts(TuleapUser $user, $milestoneID)
 {
@@ -25,7 +25,8 @@ function getArtifacts(TuleapUser $user, $milestoneID)
         foreach($jsonResponse as $jsonObject) {
             $artifacts[$i] = array(
                 'id' => $jsonObject->id, 
-                'initial_effort' => $jsonObject->initial_effort
+                'initial_effort' => $jsonObject->initial_effort,
+                'type' => $jsonObject->type
             );
             $i++;
         }

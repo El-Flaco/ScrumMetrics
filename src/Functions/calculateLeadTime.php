@@ -1,7 +1,7 @@
 <?php
 namespace Flacox;
 
-require_once(dirname(__FILE__).DIRECTORY_SEPARATOR."Classes".DIRECTORY_SEPARATOR."TuleapUser.class.php");
+require_once(dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR."Classes".DIRECTORY_SEPARATOR."TuleapUser.class.php");
 require_once(dirname(__FILE__).DIRECTORY_SEPARATOR."getPlannings.php");
 require_once(dirname(__FILE__).DIRECTORY_SEPARATOR."getMilestones.php");
 require_once(dirname(__FILE__).DIRECTORY_SEPARATOR."getMilestoneContent.php");

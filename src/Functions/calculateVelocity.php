@@ -7,12 +7,8 @@ require_once(dirname(__FILE__).DIRECTORY_SEPARATOR."getMilestones.php");
 require_once(dirname(__FILE__).DIRECTORY_SEPARATOR."getMilestoneInformation.php");
 require_once(dirname(__FILE__).DIRECTORY_SEPARATOR."getPlannings.php");
 require_once(dirname(__FILE__).DIRECTORY_SEPARATOR."getProjects.php");
-require_once(dirname(__FILE__).DIRECTORY_SEPARATOR."Classes".DIRECTORY_SEPARATOR."JsonFileManager.class.php");
+require_once(dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR."Classes".DIRECTORY_SEPARATOR."JsonFileManager.class.php");
 
-/**
- * @params user, Tuleap user
- * @params projectID, id of the chosen project
- */
 function calculateVelocity(TuleapUser $user, $projectID)
 {
     $projects = getProjects($user);
@@ -50,10 +46,6 @@ function calculateVelocity(TuleapUser $user, $projectID)
     }
 }
 
-/**
- * @params user, Tuleap user
- * @params milestoneID, id of the milestone
- */
 function calculateMilestoneVelocity(TuleapUser $user, $milestoneID)
 {
     $milestoneInfo = array();
@@ -80,10 +72,6 @@ function calculateMilestoneVelocity(TuleapUser $user, $milestoneID)
     return $calculatedArray;
 }
 
-/**
- * @params artifacts, array of artifacts belonging to a milestone
- * from which the commited effort will be calculated
- */
 function calculateCommitedEffort(array $artifacts)
 {
     $totalInitialEffort = 0;
@@ -94,11 +82,6 @@ function calculateCommitedEffort(array $artifacts)
     return $totalInitialEffort;
 }
 
-/**
- * @params user, Tuleap user
- * @params artifacts, array of artifacts belonging to a milestone
- * from which the work done will be calculated
- */
 function calculateWorkDone(TuleapUser $user, array $artifacts)
 {
     $totalWorkDone = 0;

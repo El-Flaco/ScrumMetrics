@@ -2,13 +2,9 @@
 namespace Flacox;
 
 require_once(dirname(__FILE__).DIRECTORY_SEPARATOR."cms_chart.php");
-require_once(dirname(__FILE__).DIRECTORY_SEPARATOR."Functions".DIRECTORY_SEPARATOR."calculateVelocity.php");
-require_once(dirname(__FILE__).DIRECTORY_SEPARATOR."Classes".DIRECTORY_SEPARATOR."JsonFileManager.class.php");
+require_once(dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR."Functions".DIRECTORY_SEPARATOR."calculateVelocity.php");
+require_once(dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR."Classes".DIRECTORY_SEPARATOR."JsonFileManager.class.php");
 
-/**
- * @params user, Tuleap user
- * @params projectID, id of the chosen project
- */
 function drawGraph(TuleapUser $user, $projectID)
 {
     $filesNames = calculateVelocity($user, $projectID);
@@ -19,13 +15,10 @@ function drawGraph(TuleapUser $user, $projectID)
         $formatedData = formatData($jsonData);
         $init_chart = setChartProperties();
         cms_chart($formatedData, $init_chart);
+        $jsonFileManager->deleteFile($fileName);
     }
 }
 
-/**
- * @params rawData, a JSON with data that need to be formatted 
- * in order to be drawn in a chart
- */
 function formatData($rawData)
 {
     $cookedData = array();
@@ -46,9 +39,6 @@ function formatData($rawData)
     return $cookedData;
 }
 
-/**
- *
- */
 function setChartProperties()
 {
     $init_chart = array();
@@ -57,6 +47,7 @@ function setChartProperties()
     $init_chart['gapR'] = 5;
     $init_chart['gapL'] = -30;
     $init_chart['css'] = 1;
+    $init_chart['colorDel'] = '0,1,2';
     return $init_chart;
 }
 

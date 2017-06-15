@@ -2,12 +2,8 @@
 namespace Flacox;
 
 require_once(dirname(__FILE__).DIRECTORY_SEPARATOR."cms_chart.php");
-require_once(dirname(__FILE__).DIRECTORY_SEPARATOR."Functions".DIRECTORY_SEPARATOR."calculateLeadTime.php");
+require_once(dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR."Functions".DIRECTORY_SEPARATOR."calculateLeadTime.php");
 
-/**
- * @params user, Tuleap user
- * @params projectID, id of the chosen project
- */
 function drawLeadTime(TuleapUser $user, $projectID)
 {
     $title = "Lead Time";
@@ -73,9 +69,7 @@ function drawLeadTime(TuleapUser $user, $projectID)
     cms_chart($formatedData, $init_chart);
 }
 
-/**
- * @params title, title of the chart
- */
+
 function setChartProperties($title)
 {
     $init_chart = array();
@@ -83,8 +77,20 @@ function setChartProperties($title)
     $init_chart['title'] = $title;
     $init_chart['valShow']= 1;
     $init_chart['gapR'] = 5;
-    $init_chart['gapL'] = -30;
+    $init_chart['gapL'] = -10;
     $init_chart['css'] = 1;
+    $init_chart['colorDel'] = '0';
+    
+    if (strpos($title, 'Days') !== false) {
+        $init_chart['yUnit'] = 'days';
+    } elseif (strpos($title, 'Hours') !== false) {
+        $init_chart['yUnit'] = 'hs';
+    } elseif (strpos($title, 'Minutes') !== false) {
+        $init_chart['yUnit'] = 'min';
+    } else {
+        $init_chart['yUnit'] = 'sec';
+    }
+    
     return $init_chart;
 }
 
