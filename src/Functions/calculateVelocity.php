@@ -7,7 +7,7 @@ require_once(dirname(__FILE__).DIRECTORY_SEPARATOR."getMilestones.php");
 require_once(dirname(__FILE__).DIRECTORY_SEPARATOR."getMilestoneInformation.php");
 require_once(dirname(__FILE__).DIRECTORY_SEPARATOR."getPlannings.php");
 require_once(dirname(__FILE__).DIRECTORY_SEPARATOR."getProjects.php");
-require_once(dirname(__FILE__).DIRECTORY_SEPARATOR."JsonFileManager.class.php");
+require_once(dirname(__FILE__).DIRECTORY_SEPARATOR."Classes".DIRECTORY_SEPARATOR."JsonFileManager.class.php");
 
 /**
  * @params user, Tuleap user

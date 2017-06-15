@@ -1,13 +1,13 @@
 <?php
 namespace Flacox;
 
-require_once(dirname(__FILE__).DIRECTORY_SEPARATOR.'TuleapUser.class.php');
-require_once(dirname(__FILE__).DIRECTORY_SEPARATOR.'CurlManager.class.php');
+require_once(dirname(__FILE__).DIRECTORY_SEPARATOR."Classes".DIRECTORY_SEPARATOR."TuleapUser.class.php");
+require_once(dirname(__FILE__).DIRECTORY_SEPARATOR."Classes".DIRECTORY_SEPARATOR."CurlManager.class.php");
 
-function getBugStatusChangesets($user, $bugID)
+function getUserStoryStatusChangesets(TuleapUser $user, $artifactID)
 {
     $curlManager = new CurlManager();
-    $curlManager->setUrl("api/artifacts/".$bugID."/changesets");
+    $curlManager->setUrl("api/artifacts/".$artifactID."/changesets");
     $curlManager->setHeaders($user->getId(), $user->getToken());
 
     $query = $curlManager->execute();
@@ -23,7 +23,7 @@ function getBugStatusChangesets($user, $bugID)
 
         foreach ($jsonResponse as $jsonObject) {
             $artifactValues = $jsonObject->values;
-            $status = getBugStatus($artifactValues);
+            $status = getStatus($artifactValues);
 
             if ($status !== null) {
                 $aux['status'] = $status;
@@ -36,12 +36,12 @@ function getBugStatusChangesets($user, $bugID)
     }
 }
 
-function getBugStatus($artifactValues) {
+function getStatus($artifactValues) {
     $statusSubmissions = null;
 
-   foreach ($artifactValues as $object) {
-        if ($object->field_id === 8 && $object->label ==="Status") {
-            $statusValues = $object->values;
+    foreach ($artifactValues as $value) {
+        if ($value->field_id == 120) {
+            $statusValues = $value->values;
             return $statusValues[0]->label;
         }
     }

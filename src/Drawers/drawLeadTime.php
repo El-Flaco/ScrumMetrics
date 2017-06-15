@@ -2,7 +2,7 @@
 namespace Flacox;
 
 require_once(dirname(__FILE__).DIRECTORY_SEPARATOR."cms_chart.php");
-require_once(dirname(__FILE__).DIRECTORY_SEPARATOR."calculateLeadTime.php");
+require_once(dirname(__FILE__).DIRECTORY_SEPARATOR."Functions".DIRECTORY_SEPARATOR."calculateLeadTime.php");
 
 /**
  * @params user, Tuleap user

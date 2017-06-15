@@ -2,8 +2,8 @@
 namespace Flacox;
 
 require_once(dirname(__FILE__).DIRECTORY_SEPARATOR."cms_chart.php");
-require_once(dirname(__FILE__).DIRECTORY_SEPARATOR."calculateVelocity.php");
-require_once(dirname(__FILE__).DIRECTORY_SEPARATOR."JsonFileManager.class.php");
+require_once(dirname(__FILE__).DIRECTORY_SEPARATOR."Functions".DIRECTORY_SEPARATOR."calculateVelocity.php");
+require_once(dirname(__FILE__).DIRECTORY_SEPARATOR."Classes".DIRECTORY_SEPARATOR."JsonFileManager.class.php");
 
 /**
  * @params user, Tuleap user
