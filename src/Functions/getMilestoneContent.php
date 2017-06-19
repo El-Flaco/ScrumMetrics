@@ -8,7 +8,9 @@ function getMilestoneContent(TuleapUser $user, $milestoneID)
 {
     $curlManager = new CurlManager();
     $curlManager->setUrl("api/milestones/".$milestoneID."/content");
-    $curlManager->setHeaders($user->getId(), $user->getToken());
+    $userID = $user->getId();
+    $userToken = $user->getToken();
+    $curlManager->setHeaders($userID, $userToken);
 
     $query = $curlManager->execute();
 

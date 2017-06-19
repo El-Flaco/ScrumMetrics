@@ -2,7 +2,10 @@
 namespace Flacox;
 
 require_once(dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR."Functions".DIRECTORY_SEPARATOR."getProjects.php");
+<<<<<<< HEAD
 require_once(dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR."Classes".DIRECTORY_SEPARATOR."TuleapUser.class.php");
+=======
+>>>>>>> elementsType
 ?>
 <html>
 <head>
