@@ -1,7 +1,8 @@
 <?php
 namespace Flacox;
 
-require_once(dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR."getProjects.php");
+require_once(dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR."Functions".DIRECTORY_SEPARATOR."getProjects.php");
+require_once(dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR."Classes".DIRECTORY_SEPARATOR."TuleapUser.class.php");
 ?>
 <html>
 <head>
@@ -14,7 +15,8 @@ require_once(dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR."getProjects.php");
     if ($_SESSION['user'] == '' || $_SESSION['token'] == '') {
         header("Location: login.php");
     } else {
-        echo "<center><h2>Hello, user " . $_SESSION['user']. " _tk_: " . $_SESSION['token'] . "</h2></center>";
+        $tuleapUser = $_SESSION['user'];
+        echo "<center><h2>Hello, user " . $tuleapUser->getId() . " _tk_: " . $tuleapUser->getToken() . "</h2></center>";
     }
     ?>
     <div name="menu_list">

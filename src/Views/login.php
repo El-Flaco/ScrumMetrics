@@ -1,7 +1,7 @@
 <?php
 namespace Flacox;
 
-require_once(dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR."TuleapUser.class.php");
+require_once(dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR."Classes".DIRECTORY_SEPARATOR."TuleapUser.class.php");
 ?>
 <html>
 <head>
@@ -28,8 +28,7 @@ require_once(dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR."TuleapUser.class.ph
                     $user = new TuleapUser($name, $password);
                     
                     if ($user->getToken() !== null && $user->getId() !== null) {
-                        $_SESSION['user'] = $user->getId();
-                        $_SESSION['token'] = $user->getToken();
+                        $_SESSION['user'] = $user;
                         
                         if (isset($_SESSION)) {
                             header('Location: home.php');

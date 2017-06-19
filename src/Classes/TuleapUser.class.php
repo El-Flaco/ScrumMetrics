@@ -5,10 +5,12 @@ class TuleapUser
 {
     private $token = NULL;
     private $id = NULL;
+    private $name;
 
     public function __construct($name, $password)
     {
         if ($this->authenticate($name, $password)) {
+            $this->name = $name;
             return true;
         } else {
             return false;
@@ -60,20 +62,19 @@ class TuleapUser
         }
     }
 
-    /**
-    * @return string
-    */
     public function getToken()
     {
         return $this->token;
     }
 
-    /**
-    * @return string
-    */
     public function getId()
     {
         return $this->id;
+    }
+    
+    public function getName()
+    {
+        return $this->name;
     }
 }
 ?>
