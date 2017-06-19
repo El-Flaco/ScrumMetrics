@@ -6,7 +6,7 @@ require_once(dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR."Functions".DIRECTOR
 require_once(dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR."Functions".DIRECTORY_SEPARATOR."getMilestones.php");
 require_once(dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR."Functions".DIRECTORY_SEPARATOR."getPlannings.php");
 
-function drawElementsByType(TuleapUser $user, $projectID)
+function drawArtifactsByType(TuleapUser $user, $projectID)
 {
     $title = "Type of Elements Proportion";
     $formatedData = getElementsByType($user, $projectID);
@@ -65,6 +65,6 @@ $password = $argv[2];
 
 $u = new TuleapUser($userName, $password);
 if ($u->getToken() !== NULL) {
-    drawElementsByType($u, $argv[3]);
+    drawArtifactsByType($u, $argv[3]);
 }
 ?>
