@@ -1,14 +1,13 @@
 <?php
 namespace Flacox;
 
-require_once(dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR."Classes".DIRECTORY_SEPARATOR."TuleapUser.class.php");
 require_once(dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR."Classes".DIRECTORY_SEPARATOR."CurlManager.class.php");
 
-function getBugStatusChangesets($user, $bugID)
+function getBugStatusChangesets($userID, $userToken, $bugID)
 {
     $curlManager = new CurlManager();
     $curlManager->setUrl("api/artifacts/".$bugID."/changesets");
-    $curlManager->setHeaders($user->getId(), $user->getToken());
+    $curlManager->setHeaders($userID, $userToken);
 
     $query = $curlManager->execute();
 

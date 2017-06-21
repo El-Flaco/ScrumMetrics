@@ -1,0 +1,21 @@
+<html>
+<head>
+    <title>Welcome to meTricks</title>
+    <link rel="stylesheet" type="text/css" href="/css/home.css">
+    <script type="text/javascript" src="/js/homeHandler.js"></script>
+    <script type="text/javascript" src="/js/sessionHandler.js"></script>
+</head>
+<body onload="checkUser()">
+    <div id="headerDiv">
+        <ul class="headerUl">
+            <li><a class="active" href="home.html">Home</a></li>
+            <li><a id="aGreeting">Welcome</a></li>
+            <li class="right"><button class="buttonLogout" onclick="logOut()">Logout</button></li>
+        </ul>
+    </div>
+    <div id="projectsDiv">
+        <h3 id="projectsHeading">Projects</h3>
+        <ul id="projectListUl" class="listUl"></ul>
+    </div>
+</body>
+</html>

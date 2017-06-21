@@ -1,7 +1,6 @@
 <?php
 namespace Flacox;
 
-require_once(dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR."Classes".DIRECTORY_SEPARATOR."TuleapUser.class.php");
 require_once(dirname(__FILE__).DIRECTORY_SEPARATOR."getPlannings.php");
 require_once(dirname(__FILE__).DIRECTORY_SEPARATOR."getMilestones.php");
 require_once(dirname(__FILE__).DIRECTORY_SEPARATOR."getMilestoneContent.php");
@@ -14,13 +13,15 @@ class LeadTimeCalculator
     private $USER_STORY = 1;
     private $BUG = 2;
     
-    private $user;
+    private $userID;
+    private $userToken;
     private $projectID;
     private $leadTimeType=-1;
     
-    public function __construct(TuleapUser $user, $projectID, $leadTimeType)
+    public function __construct($userID, $userToken, $projectID, $leadTimeType)
     {
-        $this->user = $user;
+        $this->userID = $userID;
+        $this->userToken = $userToken;
         $this->projectID = $projectID;
         
         if ($leadTimeType == $this->SPRINT) {
@@ -34,12 +35,12 @@ class LeadTimeCalculator
     
     public function calculateLeadTime()
     {
-        $planningsInfo = getPlannings($this->user, $this->projectID);
+        $planningsInfo = getPlannings($this->userID, $this->userToken, $this->projectID);
         $AvgLeadTimes;
 
         foreach ($planningsInfo as $planning) {
             if (strpos($planning['label'], 'Sprint Planning') !== false) {
-                $milestones = getMilestones($this->user, $planning['id']);
+                $milestones = getMilestones($this->userID, $this->userToken, $planning['id']);
 
                 if ($this->leadTimeType != -1) {
                     switch ($this->leadTimeType) {
@@ -78,7 +79,7 @@ class LeadTimeCalculator
     
     function calculateAverageSprintLeadTime($sprintID)
     {
-        $sprintElements = getMilestoneContent($this->user, $sprintID);
+        $sprintElements = getMilestoneContent($this->userID, $this->userToken, $sprintID);
         $elementsData = array();
         $averageSprintLeadTime = null;
         $acumulatedSeconds = 0;
@@ -132,7 +133,7 @@ class LeadTimeCalculator
     
     function calculateAverageBugLeadTime($sprintID)
     {
-        $sprintElements = getMilestoneContent($this->user, $sprintID);
+        $sprintElements = getMilestoneContent($this->userID, $this->userToken, $sprintID);
         $elementsData = array();
         $averageBugLeadTime = null;
         $acumulatedSeconds = 0;
@@ -181,7 +182,7 @@ class LeadTimeCalculator
     
     function calculateAverageUserStoryLeadTime($sprintID)
     {
-        $sprintElements = getMilestoneContent($this->user, $sprintID);
+        $sprintElements = getMilestoneContent($this->userID, $this->userToken, $sprintID);
         $elementsData = array();
         $averageBugLeadTime = null;
         $acumulatedSeconds = 0;
@@ -218,7 +219,7 @@ class LeadTimeCalculator
     function getUserStoryLeadTime($userStoryID)
     {
         $currentStatus = "";
-        $artifactChangesets = getUserStoryStatusChangesets($this->user, $userStoryID);
+        $artifactChangesets = getUserStoryStatusChangesets($this->userID, $this->userToken, $userStoryID);
         $artifactStartTime;
         $artifactEndTime;
         
@@ -241,7 +242,7 @@ class LeadTimeCalculator
     function getBugLeadTime($bugID)
     {
         $currentStatus = "";
-        $artifactChangesets = getBugStatusChangesets($this->user, $bugID);
+        $artifactChangesets = getBugStatusChangesets($this->userID, $this->userToken, $bugID);
         $artifactStartTime;
         $artifactEndTime;
 

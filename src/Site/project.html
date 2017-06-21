@@ -1,0 +1,27 @@
+<html>
+<head>
+    <title>meTricks - Project</title>
+    <link rel="stylesheet" type="text/css" href="css/project.css">
+    <script type="text/javascript" src="js/projectHandler.js"></script>
+    <script type="text/javascript" src="/js/sessionHandler.js"></script>
+</head>
+<body onload="setProjectName()">
+    <div id="headerDiv">
+        <ul class="headerUl">
+            <li><a class="active" href="home.html">Home</a></li>
+            <li><a id="aGreeting">Project</a></li>
+            <li class="right"><button class="buttonLogout" onclick="logOut()">Logout</button></li>
+        </ul>
+    </div>
+    <div class="menuMetricsDiv">
+        <ul class="menuMetricsUl">
+            <li><button onclick="getVelocity()">Velocity</button></li>
+            <li><button onclick="getArtifactsByType()">Artifacts by Type</button></li>
+            <li><button onclick="getSprintsLeadTime()">Sprints Lead Time</button></li>
+            <li><button onclick="getArtifactsLeadTime()">Artifacts Lead Time</button></li>
+        </ul>
+    </div>
+    <div id="graphDiv">
+    </div>
+</body>
+</html>

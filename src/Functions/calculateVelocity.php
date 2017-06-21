@@ -9,9 +9,9 @@ require_once(dirname(__FILE__).DIRECTORY_SEPARATOR."getPlannings.php");
 require_once(dirname(__FILE__).DIRECTORY_SEPARATOR."getProjects.php");
 require_once(dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR."Classes".DIRECTORY_SEPARATOR."JsonFileManager.class.php");
 
-function calculateVelocity(TuleapUser $user, $projectID)
+function calculateVelocity($userID, $userToken, $projectID)
 {
-    $projects = getProjects($user);
+    $projects = getProjects($userID, $userToken);
     $projectsID = array();
     $projectsLabel = array();
     
@@ -19,19 +19,17 @@ function calculateVelocity(TuleapUser $user, $projectID)
         $projectsID[] = $project{"id"};
         $projectsLabel[] = strtolower($project{"label"});
     }
-
-    $chosenProject = strtolower($projectID);
     
-    if (in_array($chosenProject, $projectsID) || in_array($chosenProject, $projectsLabel)) {
-        $planningsInfo = getPlannings($user, $chosenProject);
+    if (in_array($projectID, $projectsID)) {
+        $planningsInfo = getPlannings($userID, $userToken, $projectID);
         
         $filesName = array();
         foreach ($planningsInfo as $planning) {
-            $milestones = getMilestones($user, $planning['id']);
+            $milestones = getMilestones($userID, $userToken, $planning['id']);
             $dataCollected = array();
             
             foreach ($milestones as $bigMilestone) {
-                $aux = calculateMilestoneVelocity($user, $bigMilestone["id"]);
+                $aux = calculateMilestoneVelocity($userID, $userToken, $bigMilestone["id"]);
                 $aux['label'] = $bigMilestone['label'];
                 $dataCollected[] = $aux;
             }
@@ -46,11 +44,11 @@ function calculateVelocity(TuleapUser $user, $projectID)
     }
 }
 
-function calculateMilestoneVelocity(TuleapUser $user, $milestoneID)
+function calculateMilestoneVelocity($userID, $userToken, $milestoneID)
 {
     $milestoneInfo = array();
     
-    $milestoneInfo[] = getMilestoneInformation($user, $milestoneID);
+    $milestoneInfo[] = getMilestoneInformation($userID, $userToken, $milestoneID);
     
     $milestoneCapacity;
     $milestoneCommited;
@@ -60,9 +58,9 @@ function calculateMilestoneVelocity(TuleapUser $user, $milestoneID)
     for ($i = 0; $i < count($milestoneInfo); $i++) {
         $milestoneCapacity = $milestoneInfo[$i]["capacity"];
              
-        $artifacts = getArtifacts($user, $milestoneInfo[$i]["id"]);
+        $artifacts = getArtifacts($userID, $userToken, $milestoneInfo[$i]["id"]);
         $milestoneCommited = calculateCommitedEffort($artifacts);
-        $milestoneDone = calculateWorkDone($user, $artifacts);
+        $milestoneDone = calculateWorkDone($userID, $userToken, $artifacts);
 
         $calculatedArray["capacity"] = $milestoneCapacity;
         $calculatedArray["work_commited"] = $milestoneCommited;
@@ -82,11 +80,11 @@ function calculateCommitedEffort(array $artifacts)
     return $totalInitialEffort;
 }
 
-function calculateWorkDone(TuleapUser $user, array $artifacts)
+function calculateWorkDone($userID, $userToken, array $artifacts)
 {
     $totalWorkDone = 0;
     foreach ($artifacts as $artifact) {
-        $artifactInfo = getArtifactInformation($user, $artifact["id"]);
+        $artifactInfo = getArtifactInformation($userID, $userToken, $artifact["id"]);
 
         if ($artifactInfo["status"] === "Done") {
             $totalWorkDone += $artifact["initial_effort"];

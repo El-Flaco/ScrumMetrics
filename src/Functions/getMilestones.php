@@ -1,14 +1,13 @@
 <?php
 namespace Flacox;
 
-require_once(dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR."Classes".DIRECTORY_SEPARATOR."TuleapUser.class.php");
 require_once(dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR."Classes".DIRECTORY_SEPARATOR."CurlManager.class.php");
 
-function getMilestones(TuleapUser $user, $planningID)
+function getMilestones($userID, $userToken, $planningID)
 {
     $curlManager = new CurlManager();
     $curlManager->setUrl("api/plannings/".$planningID."/milestones");
-    $curlManager->setHeaders($user->getId(), $user->getToken());
+    $curlManager->setHeaders($userID, $userToken);
 
     $query = $curlManager->execute();
 

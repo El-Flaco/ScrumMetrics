@@ -1,0 +1,11 @@
+#inputLogin {
+    text-align: center;
+    margin: 4px 2px;
+    padding: 15px 32px;
+    font-size: 16px;
+    color: white;
+    border: 1px solid #333;
+    text-decoration: none;
+    background-color: #2962ff;
+    cursor: pointer;
+}

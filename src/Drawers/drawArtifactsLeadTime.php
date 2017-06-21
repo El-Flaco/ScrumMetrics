@@ -4,7 +4,7 @@ namespace Flacox;
 require_once(dirname(__FILE__).DIRECTORY_SEPARATOR."cms_chart.php");
 require_once(dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR."Functions".DIRECTORY_SEPARATOR."LeadTimeCalculator.php");
 
-function drawArtifactsLeadTime(TuleapUser $user, $projectID)
+function drawArtifactsLeadTime($userID, $userToken, $projectID)
 {
     $title = "Lead Time";
     $days = false;
@@ -12,8 +12,8 @@ function drawArtifactsLeadTime(TuleapUser $user, $projectID)
     $minutes = false;
     $time0=true;
     
-    $bugsLeadTimeCalculator = new LeadTimeCalculator($user, $projectID, 2);
-    $userStoriesLeadTimeCalculator = new LeadTimeCalculator($user, $projectID, 1);
+    $bugsLeadTimeCalculator = new LeadTimeCalculator($userID, $userToken, $projectID, 2);
+    $userStoriesLeadTimeCalculator = new LeadTimeCalculator($userID, $userToken, $projectID, 1);
     
     $arrayBugsLeadTime = $bugsLeadTimeCalculator->calculateLeadTime();
     $arrayUserStoriesLeadTime = $userStoriesLeadTimeCalculator->calculateLeadTime();
@@ -161,13 +161,5 @@ function setChartProperties($title)
     }
     
     return $init_chart;
-}
-
-$userName = $argv[1];
-$password = $argv[2];
-
-$u = new TuleapUser($userName, $password);
-if ($u->getToken() !== NULL) {
-    drawArtifactsLeadTime($u, $argv[3]);
 }
 ?>

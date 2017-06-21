@@ -6,24 +6,24 @@ require_once(dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR."Functions".DIRECTOR
 require_once(dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR."Functions".DIRECTORY_SEPARATOR."getMilestones.php");
 require_once(dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR."Functions".DIRECTORY_SEPARATOR."getPlannings.php");
 
-function drawArtifactsByType(TuleapUser $user, $projectID)
+function drawArtifactsByType($userID, $userToken, $projectID)
 {
     $title = "Type of Elements Proportion";
-    $formatedData = getElementsByType($user, $projectID);
+    $formatedData = getElementsByType($userID, $userToken, $projectID);
     $init_chart = setChartProperties($title);
     cms_chart($formatedData, $init_chart);
 }
 
-function getElementsByType(TuleapUser $user, $projectID)
+function getElementsByType($userID, $userToken, $projectID)
 {
-    $plannings = getPlannings($user, $projectID);
+    $plannings = getPlannings($userID, $userToken, $projectID);
     $formatedData = array();
     
     foreach ($plannings as $plan) {
-        $milestonesArray = getMilestones($user, $plan['id']);
+        $milestonesArray = getMilestones($userID, $userToken, $plan['id']);
         $artifacts;
         foreach ($milestonesArray as $milestone) {
-            $artifacts[$milestone['label']] = getArtifacts($user, $milestone['id']);
+            $artifacts[$milestone['label']] = getArtifacts($userID, $userToken, $milestone['id']);
 
             foreach ($artifacts as $artifact) {
                 $numberOfBugs = 0;
@@ -58,13 +58,5 @@ function setChartProperties($title)
     $init_chart['css'] = 1;
     $init_chart['colorDel'] = '1,2,3';
     return $init_chart;
-}
-
-$userName = $argv[1];
-$password = $argv[2];
-
-$u = new TuleapUser($userName, $password);
-if ($u->getToken() !== NULL) {
-    drawArtifactsByType($u, $argv[3]);
 }
 ?>

@@ -5,9 +5,9 @@ require_once(dirname(__FILE__).DIRECTORY_SEPARATOR."cms_chart.php");
 require_once(dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR."Functions".DIRECTORY_SEPARATOR."calculateVelocity.php");
 require_once(dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR."Classes".DIRECTORY_SEPARATOR."JsonFileManager.class.php");
 
-function drawGraph(TuleapUser $user, $projectID)
+function drawVelocity($userID, $userToken, $projectID)
 {
-    $filesNames = calculateVelocity($user, $projectID);
+    $filesNames = calculateVelocity($userID, $userToken, $projectID);
     $jsonFileManager = new JsonFileManager();
     
     foreach ($filesNames as $fileName) {
@@ -49,14 +49,5 @@ function setChartProperties()
     $init_chart['css'] = 1;
     $init_chart['colorDel'] = '0,1,2';
     return $init_chart;
-}
-
-
-$userName = $argv[1];
-$password = $argv[2];
-
-$u = new TuleapUser($userName, $password);
-if ($u->getToken() !== NULL) {
-    drawGraph($u, $argv[3]);
 }
 ?>

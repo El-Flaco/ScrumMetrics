@@ -1,0 +1,79 @@
+body {
+    margin: 0;
+}
+
+ul.headerUl {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+
+ul.headerUl li {
+    float: left;
+}
+
+ul.headerUl li a{
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+ul.listUl li {
+    text-decoration: none;
+    display: block;
+    text-align: left;
+    padding: 14px 16px;
+}
+
+button.buttonLogout {
+    text-align: center;
+    color: white;
+    border: 1px solid #448aff;
+    text-decoration: none;
+    background-color: #333;
+    cursor: pointer;
+    -webkit-transition-duration: 0.3s; /* Safari */
+    transition-duration: 0.3s;
+}
+
+button.buttonProject {
+    margin: 10px 5px;
+    font-size: 16px;
+    padding: 13px 15px;
+    text-decoration: none;
+    color: white;
+    background-color: #222;
+    cursor: pointer;
+    -webkit-transition-duration: 0.3s; /* Safari */
+    transition-duration: 0.3s;
+}
+
+button.buttonLogout:hover {
+    background-color: #111;
+}
+
+button.buttonProject:hover {
+    background-color: #335acc;
+}
+
+ul.headerUl li a:hover:not(.active) {
+    background-color: #111;
+}
+
+ul.headerUl li a.active {
+    background-color: #2962ff;
+}
+
+ul.headerUl li.right {
+    float: right;
+}
+
+@media screen and (max-width: 600px){
+    ul.headerUl li.right, 
+    ul.headerUl li {float: none;}
+    button.buttonLogout {width: 100%;}
+}
