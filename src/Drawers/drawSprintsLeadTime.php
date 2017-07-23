@@ -10,7 +10,7 @@ function drawSprintsLeadTime($userID, $userToken, $projectID)
     $days = false;
     $hours = false;
     $minutes = false;
-    $time0=true;
+    $time0 = true;
     
     $leadTimeCalculator = new LeadTimeCalculator($userID, $userToken, $projectID, 0);
     

@@ -125,6 +125,14 @@ function drawArtifactsLeadTime($userID, $userToken, $projectID)
 
             $title = $title . " (in Minutes)";
         } else {
+            foreach ($sprintsLeadTime['Bugs'] as $key => $value) {
+                $bugsLeadTime[$key] = $value;
+            }
+            
+            foreach ($sprintsLeadTime['User Stories'] as $key => $value) {
+                $userStoriesLeadTime[$key] = $value;
+            }
+            
             $title = $title . " (in Seconds)";
         }
 

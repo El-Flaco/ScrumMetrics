@@ -21,8 +21,8 @@ class TuleapUser
     * This method authenticates the user.
     * If $name and $password are correct, the method sets user's token and id
     *
-    * @param string $name The Tuleap username
-    * @param string $password The password
+    * @params String $name, the Tuleap username
+    * @params String $password, the user's password
     */
     public function authenticate($name, $password)
     {

@@ -7,7 +7,7 @@ require_once(dirname(__FILE__).DIRECTORY_SEPARATOR."getMilestoneContent.php");
 require_once(dirname(__FILE__).DIRECTORY_SEPARATOR."getUserStoryStatusChangesets.php");
 require_once(dirname(__FILE__).DIRECTORY_SEPARATOR."getBugStatusChangesets.php");
 
-class LeadTimeCalculator
+class CycleTimeCalculator
 {
     private $SPRINT = 0;
     private $USER_STORY = 1;
@@ -16,42 +16,42 @@ class LeadTimeCalculator
     private $userID;
     private $userToken;
     private $projectID;
-    private $leadTimeType=-1;
+    private $cycleTimeType = -1;
     
-    public function __construct($userID, $userToken, $projectID, $leadTimeType)
+    public function __construct($userID, $userToken, $projectID, $cycleTimeType)
     {
         $this->userID = $userID;
         $this->userToken = $userToken;
         $this->projectID = $projectID;
         
-        if ($leadTimeType == $this->SPRINT) {
-            $this->leadTimeType = $this->SPRINT;
-        } elseif ($leadTimeType == $this->USER_STORY) {
-            $this->leadTimeType = $this->USER_STORY;
-        } elseif ($leadTimeType == $this->BUG) {
-            $this->leadTimeType = $this->BUG;
+        if ($cycleTimeType == $this->SPRINT) {
+            $this->cycleTimeType = $this->SPRINT;
+        } elseif ($cycleTimeType == $this->USER_STORY) {
+            $this->cycleTimeType = $this->USER_STORY;
+        } elseif ($cycleTimeType == $this->BUG) {
+            $this->cycleTimeType = $this->BUG;
         }
     }
     
-    public function calculateLeadTime()
+    public function calculateCycleTime()
     {
         $planningsInfo = getPlannings($this->userID, $this->userToken, $this->projectID);
-        $AvgLeadTimes;
+        $AvgCycleTimes;
 
         foreach ($planningsInfo as $planning) {
             if (strpos($planning['label'], 'Sprint Planning') !== false) {
                 $milestones = getMilestones($this->userID, $this->userToken, $planning['id']);
 
-                if ($this->leadTimeType != -1) {
-                    switch ($this->leadTimeType) {
+                if ($this->cycleTimeType != -1) {
+                    switch ($this->cycleTimeType) {
                         case $this->SPRINT:
-                            $AvgLeadTimes[$planning['label']."_".$planning['id']] = $this->calculateSprintsLeadTime($milestones);
+                            $AvgCycleTimes[$planning['label']."_".$planning['id']] = $this->calculateSprintsCycleTime($milestones);
                             break;
                         case $this->USER_STORY:
-                            $AvgLeadTimes[$planning['label']."_".$planning['id']] = $this->calculateUserStoriesLeadTime($milestones);
+                            $AvgCycleTimes[$planning['label']."_".$planning['id']] = $this->calculateUserStoriesCycleTime($milestones);
                             break;
                         case $this->BUG:
-                            $AvgLeadTimes[$planning['label']."_".$planning['id']] = $this->calculateBugsLeadTime($milestones);
+                            $AvgCycleTimes[$planning['label']."_".$planning['id']] = $this->calculateBugsCycleTime($milestones);
                             break;
                         default:
                             return false;
@@ -60,40 +60,40 @@ class LeadTimeCalculator
             }
         }
         
-        return $AvgLeadTimes;
+        return $AvgCycleTimes;
     }
     
-    function calculateSprintsLeadTime(array $milestones)
+    function calculateSprintsCycleTime(array $milestones)
     {
-        $sprintAverageLeadTime = array();
+        $sprintAverageCycleTime = array();
         
         foreach ($milestones as $sprint) {
-            $sprintAverageLeadTime = $this->calculateAverageSprintLeadTime($sprint['id']);
-            if ($sprintAverageLeadTime !== null) {
-                $sprintsAvgLeadTime[$sprint['label']] = $sprintAverageLeadTime;
+            $sprintAverageCycleTime = $this->calculateAverageSprintCycleTime($sprint['id']);
+            if ($sprintAverageCycleTime !== null) {
+                $sprintsAvgCycleTime[$sprint['label']] = $sprintAverageCycleTime;
             }
         }
 
-        return $sprintsAvgLeadTime;
+        return $sprintsAvgCycleTime;
     }
     
-    function calculateAverageSprintLeadTime($sprintID)
+    function calculateAverageSprintCycleTime($sprintID)
     {
         $sprintElements = getMilestoneContent($this->userID, $this->userToken, $sprintID);
         $elementsData = array();
-        $averageSprintLeadTime = null;
+        $averageSprintCycleTime = null;
         $acumulatedSeconds = 0;
         $numberOfElementsDone = 0;
         
         foreach ($sprintElements as $sprintArtifact) {
             if ($sprintArtifact['status'] === 'Closed') {
                 if ($sprintArtifact['type'] === 'Bug') {
-                    $time = $this->getBugLeadTime($sprintArtifact['id']);
+                    $time = $this->getBugCycleTime($sprintArtifact['id']);
                     if ($time !== false) {
                         $elementsData[$sprintArtifact['id']]['time'] = $time;
                     }
                 } else {
-                    $time = $this->getUserStoryLeadTime($sprintArtifact['id']);
+                    $time = $this->getUserStoryCycleTime($sprintArtifact['id']);
                     if ($time !== false) {
                         $elementsData[$sprintArtifact['id']]['time'] = $time;
                     }
@@ -111,38 +111,38 @@ class LeadTimeCalculator
         }
         
         if ($numberOfElementsDone > 0) {
-            $averageSprintLeadTime = $acumulatedSeconds / $numberOfElementsDone;
+            $averageSprintCycleTime = $acumulatedSeconds / $numberOfElementsDone;
         }
         
-        return round($averageSprintLeadTime);
+        return round($averageSprintCycleTime);
     }
 
-    function calculateBugsLeadTime(array $milestones)
+    function calculateBugsCycleTime(array $milestones)
     {
-        $bugAverageLeadTime = array();
+        $bugAverageCycleTime = array();
         
         foreach ($milestones as $sprint) {
-            $bugAverageLeadTime = $this->calculateAverageBugLeadTime($sprint['id']);
-            if ($bugAverageLeadTime !== null) {
-                $bugsAvgLeadTime[$sprint['label']] = $bugAverageLeadTime;
+            $bugAverageCycleTime = $this->calculateAverageBugCycleTime($sprint['id']);
+            if ($bugAverageCycleTime !== null) {
+                $bugsAvgCycleTime[$sprint['label']] = $bugAverageCycleTime;
             }
         }
         
-        return $bugsAvgLeadTime;
+        return $bugsAvgCycleTime;
     }
     
-    function calculateAverageBugLeadTime($sprintID)
+    function calculateAverageBugCycleTime($sprintID)
     {
         $sprintElements = getMilestoneContent($this->userID, $this->userToken, $sprintID);
         $elementsData = array();
-        $averageBugLeadTime = null;
+        $averageBugCycleTime = null;
         $acumulatedSeconds = 0;
         $numberOfElementsDone = 0;
         
         foreach ($sprintElements as $sprintArtifact) {
             if ($sprintArtifact['status'] === 'Closed') {
                 if ($sprintArtifact['type'] === 'Bug') {
-                    $time = $this->getBugLeadTime($sprintArtifact['id']);
+                    $time = $this->getBugCycleTime($sprintArtifact['id']);
                     if ($time !== false) {
                         $elementsData[$sprintArtifact['id']]['time'] = $time;
                     }
@@ -160,31 +160,31 @@ class LeadTimeCalculator
         }
         
         if ($numberOfElementsDone > 0) {
-            $averageBugLeadTime = $acumulatedSeconds / $numberOfElementsDone;
+            $averageBugCycleTime = $acumulatedSeconds / $numberOfElementsDone;
         }
         
-        return round($averageBugLeadTime);
+        return round($averageBugCycleTime);
     }
 
-    function calculateUserStoriesLeadTime(array $milestones)
+    function calculateUserStoriesCycleTime(array $milestones)
     {
-        $userStoryAverageLeadTime = array();
+        $userStoryAverageCycleTime = array();
         
         foreach ($milestones as $sprint) {
-            $userStoryAverageLeadTime = $this->calculateAverageUserStoryLeadTime($sprint['id']);
-            if ($userStoryAverageLeadTime !== null) {
-                $userStoriesAvgLeadTime[$sprint['label']] = $userStoryAverageLeadTime;
+            $userStoryAverageCycleTime = $this->calculateAverageUserStoryCycleTime($sprint['id']);
+            if ($userStoryAverageCycleTime !== null) {
+                $userStoriesAvgCycleTime[$sprint['label']] = $userStoryAverageCycleTime;
             }
         }
         
-        return $userStoriesAvgLeadTime;
+        return $userStoriesAvgCycleTime;
     }
     
-    function calculateAverageUserStoryLeadTime($sprintID)
+    function calculateAverageUserStoryCycleTime($sprintID)
     {
         $sprintElements = getMilestoneContent($this->userID, $this->userToken, $sprintID);
         $elementsData = array();
-        $averageBugLeadTime = null;
+        $averageBugCycleTime = null;
         $acumulatedSeconds = 0;
         $numberOfElementsDone = 0;
         
@@ -192,7 +192,7 @@ class LeadTimeCalculator
         foreach ($sprintElements as $sprintArtifact) {
             if ($sprintArtifact['status'] === 'Closed') {
                 if ($sprintArtifact['type'] === 'User Stories') {
-                    $time = $this->getUserStoryLeadTime($sprintArtifact['id']);
+                    $time = $this->getUserStoryCycleTime($sprintArtifact['id']);
                     if ($time !== false) {
                         $elementsData[$sprintArtifact['id']]['time'] = $time;
                     }
@@ -210,35 +210,44 @@ class LeadTimeCalculator
         }
         
         if ($numberOfElementsDone > 0) {
-            $averageBugLeadTime = $acumulatedSeconds / $numberOfElementsDone;
+            $averageBugCycleTime = $acumulatedSeconds / $numberOfElementsDone;
         }
         
-        return round($averageBugLeadTime);
+        return round($averageBugCycleTime);
     }
 
-    function getUserStoryLeadTime($userStoryID)
+    function getUserStoryCycleTime($userStoryID)
     {
         $currentStatus = "";
         $artifactChangesets = getUserStoryStatusChangesets($this->userID, $this->userToken, $userStoryID);
-        $artifactStartTime;
+        $artifactStartTime=0;
         $artifactEndTime;
         
         foreach ($artifactChangesets as $artifactInfo) {
-            if ($artifactInfo['status'] !== $currentStatus && $artifactInfo['status'] == "Todo") {
+            if ($artifactInfo['status'] != $currentStatus && $artifactInfo['status'] == "Todo") {
+                $artifactStartTime = null;
+                $currentStatus = $artifactInfo['status'];
+            }
+            
+            if ($artifactInfo['status'] != $currentStatus && $artifactInfo['status'] == "On Going") {
                 $artifactStartTime = $artifactInfo['submission'];
                 $currentStatus = $artifactInfo['status'];
-            } elseif ($artifactInfo['status'] !== $currentStatus && $artifactInfo['status'] == "Done") {
+            } elseif ($artifactInfo['status'] != $currentStatus && $artifactInfo['status'] == "Done") {
                 $artifactEndTime = $artifactInfo['submission'];
                 $currentStatus = $artifactInfo['status'];
 
-                return strtotime($artifactEndTime) - strtotime($artifactStartTime);
+                if(isset($artifactStartTime)){
+                    return strtotime($artifactEndTime) - strtotime($artifactStartTime);
+                } else {
+                    return 1;
+                }
             }
         }
         
         return false;
     }
 
-    function getBugLeadTime($bugID)
+    function getBugCycleTime($bugID)
     {
         $currentStatus = "";
         $artifactChangesets = getBugStatusChangesets($this->userID, $this->userToken, $bugID);
@@ -246,13 +255,23 @@ class LeadTimeCalculator
         $artifactEndTime;
 
         foreach ($artifactChangesets as $artifactInfo) {
-            if ($artifactInfo['status'] !== $currentStatus && $artifactInfo['status'] == "New") {
+            if ($artifactInfo['status'] != $currentStatus && $artifactInfo['status'] == "New") {
+                $artifactStartTime = null;
+                $currentStatus = $artifactInfo['status'];
+            }
+            
+            if ($artifactInfo['status'] != $currentStatus && $artifactInfo['status'] == "On going") {
                 $artifactStartTime = $artifactInfo['submission'];
                 $currentStatus = $artifactInfo['status'];
-            } elseif ($artifactInfo['status'] !== $currentStatus && $artifactInfo['status'] == "Fixed") {
+            } elseif ($artifactInfo['status'] != $currentStatus && $artifactInfo['status'] == "Fixed") {
                 $artifactEndTime = $artifactInfo['submission'];
                 $currentStatus = $artifactInfo['status'];
-                return strtotime($artifactEndTime) - strtotime($artifactStartTime);
+                
+                if(isset($artifactStartTime)){
+                    return strtotime($artifactEndTime) - strtotime($artifactStartTime);
+                } else {
+                    return 1;
+                }
             }
         }
         

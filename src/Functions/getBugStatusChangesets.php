@@ -39,7 +39,7 @@ function getBugStatus($artifactValues) {
     $statusSubmissions = null;
 
    foreach ($artifactValues as $object) {
-        if ($object->field_id === 8 && $object->label ==="Status") {
+        if ($value->type == "sb" && $object->label ==="Status") {
             $statusValues = $object->values;
             return $statusValues[0]->label;
         }

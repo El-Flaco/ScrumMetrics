@@ -40,7 +40,7 @@ function getStatus($artifactValues) {
     $statusSubmissions = null;
 
     foreach ($artifactValues as $value) {
-        if ($value->field_id == 120) {
+        if ($value->type == "sb" && $value->label == "Status") {
             $statusValues = $value->values;
             return $statusValues[0]->label;
         }

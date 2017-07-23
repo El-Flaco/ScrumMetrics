@@ -71,6 +71,15 @@ function getArtifactsLeadTime()
     }
 }
 
+function getArtifactsCycleTime()
+{
+    if (xmlHttp.readyState == 4 || xmlHttp.readyState == 0) {
+        xmlHttp.onreadystatechange = setGraphHandler;
+        xmlHttp.open("GET", "php/getGraphArtifactsCT.php" , true);
+        xmlHttp.send();
+    }
+}
+
 function setGraphHandler()
 {
     if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {

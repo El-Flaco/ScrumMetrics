@@ -1,32 +1,23 @@
 <html>
 <head>
-    <title>meTricks Login</title>
+    <title>Login meTricks</title>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" type="text/css" href="/css/login.css">
-    <script type="text/javascript">
-        function checkEmptyField()
-        {
-            var name = document.getElementById("userName").value;
-            var password = document.getElementById("userPassword").value;
-            
-            if (name == '' || password == '') {
-                document.getElementById("divEmpty").innerHTML = "Please fill the fields";
-                return false;
-            } else {
-                return true;
-            }
-            
-        }
-    </script>
 </head>
 <body>
-    <form id="formLogin" method="POST" action="php/login.php" onsubmit="return checkEmptyField()">
-        <table width="300" cellpadding="4" cellspacing="1">
-            <tr><td></td><td colspan="3"><strong>User Login</strong></td></tr>
-            <tr></tr>
-            <tr><td width="78">Username</td><td width="6">:</td><td width="294"><input id="userName" name="userName" size="25" type="text"></td></tr>
-            <tr><td>Password</td><td>:</td><td><input id="userPassword" name="userPassword" size="25" type="password"></td></tr>
-            <tr><td></td><td></td><td><input id="inputLogin" name="submit" type="submit" Value="Login"></td></tr>
-        </table>
+    <div class="welcome">
+        <h2>Welcome to</h2>
+        <img id="appLogo" src="meTricksLogo.png" alt="Logo meTricks" style="width:128px;height:168px;">
+    </div>
+    <form id="formLogin" method="POST" action="php/login.php">
+        <div class="container">
+            <label><b>Username</b></label>
+            <input type="text" placeholder="Enter Username" name="userName" id="userName" required>
+            <label><b>Password</b></label>
+            <input type="password" placeholder="Enter password" name="userPassword" id="userPassword" required>
+            <button type="submit">Login</button>
+        </div>
     </form>
     <div id="divEmpty"></div>
 </body>    
